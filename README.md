@@ -1,1 +1,1 @@
-# Drake Easel Path Planning Repo C++
+# Drake EASEL Path Planning Repo C++
