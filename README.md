@@ -1,1 +1,1 @@
-# ARPOD_PathPlanning
+# Drake EASEL Path Planning Repo C++
