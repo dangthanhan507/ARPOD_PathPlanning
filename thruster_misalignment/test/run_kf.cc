@@ -1,12 +1,5 @@
-#include <drake/systems/analysis/simulator.h>
-#include <drake/systems/framework/basic_vector.h>
-#include <drake/systems/framework/diagram.h>
-#include <drake/systems/framework/diagram_builder.h>
-#include <lib_state_estimation.hpp>
+#include <lib_kalman_filter.hpp>
 #include <iostream>
-
-
-#define ORBITAL_RATE 1
 
 /**
  * run_kf.cc

@@ -5,7 +5,10 @@
 #include <lib_dynamics.hpp>
 #include <iostream>
 
+
+#include <Eigen/Dense>
 #define ORBITAL_RATE 1
+#define DT 1
 namespace drake {
 
 void runMain()
@@ -27,8 +30,14 @@ void runMain()
     u << 1,0,0;
     space_sim.get_input_port(0).FixValue(&simulator.get_mutable_context(), u);
 
-    simulator.AdvanceTo(1); //move forward in seconds
-    std::cout << state.get_vector() << std::endl;
+    auto [A,B] = createZOHHCW(ORBITAL_RATE, DT);
+    auto x_k1 = A*state.get_vector().CopyToVector() + B*u;
+    std::cout << "MAT x_k+1: \n" << x_k1 << std::endl;
+    
+    simulator.AdvanceTo(DT); //move forward in seconds
+    std::cout << "ODE x_k+1: \n" << state.get_vector() << std::endl;
+
+    
 }
 }//namespace drake
 

@@ -1,5 +1,5 @@
 #include <lib_dynamics.hpp>
-
+#include <math.h>
 namespace drake {
 
 HCW_Dynamics::HCW_Dynamics(double n)
@@ -45,3 +45,24 @@ systems::ContinuousState<double>* derivatives) const
 }
 
 }//namespace drake
+
+std::tuple<Eigen::MatrixXd,Eigen::MatrixXd> createZOHHCW(double n, double dt)
+{
+    Eigen::MatrixXd A = Eigen::MatrixXd::Zero(6,6);
+    Eigen::MatrixXd B = Eigen::MatrixXd::Zero(6,3);
+    //A is 6x6
+    A << 4-3*cos(n*dt), 0, 0, sin(n*dt)/n, 2*(1-cos(n*dt))/n, 0,
+         6*(sin(n*dt)-n*dt), 1, 0, -2*(1-cos(n*dt))/n, (4*sin(n*dt)-3*n*dt)/n, 0,
+         0,0,cos(n*dt),0,0,sin(n*dt)/n,
+         3*n*sin(n*dt),0,0,cos(n*dt),2*sin(n*dt),0,
+         -6*n*(1-cos(n*dt)), 0, 0, -2*sin(n*dt), 4*cos(n*dt)-3, 0,
+         0,0,-n*sin(n*dt), 0, 0, cos(n*dt);
+    //B is 6x3
+    B << sin(n*dt)/n, 2*(1-cos(n*dt))/n, 0,
+         -2*(n*dt - sin(n*dt))/n/n, 4*(1-cos(n*dt))/n/n-(3/2)*dt*dt, 0,
+         0,0,(1-cos(n*dt))/n/n,
+         sin(n*dt)/n,2*(1-cos(n*dt))/n,0,
+         -2*(1-cos(n*dt))/n, 4*sin(n*dt)/n-3*dt, 0,
+         0,0,sin(n*dt)/n;
+    return std::make_tuple(A,B);
+}
