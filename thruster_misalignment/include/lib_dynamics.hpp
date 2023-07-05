@@ -7,12 +7,20 @@
 #include <drake/systems/framework/diagram.h>
 #include <drake/systems/framework/diagram_builder.h>
 
-class HCW_Dynamics : public systems::LeafSystem<T>
+namespace drake{
+
+class HCW_Dynamics : public systems::LeafSystem<double>
 {
     public:
     HCW_Dynamics(double n);
+
     private:
     void DoCalcTimeDerivatives(const systems::Context<double>& context, 
-    systems::ContinuousState<double>* derivatives);
+    systems::ContinuousState<double>* derivatives) const override;
 };
+
+//TODO: -> add nonlinear orbital dynamics
+//      -> add Discrete HCW Dynamics
+
+}//namespace drake
 #endif

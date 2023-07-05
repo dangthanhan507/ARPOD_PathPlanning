@@ -9,7 +9,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # find_package(Threads MODULE REQUIRED)
 find_package(drake CONFIG REQUIRED PATHS /opt/drake)
-include_directories(include)
+include_directories(include/)
 
-add_executable(test_hcw test/run_hcw_dynamics.cc)
+add_executable(test_hcw test/run_hcw_dynamics.cc src/lib_dynamics.cc)
 target_link_libraries(test_hcw drake::drake)
+
+add_executable(test_kf test/run_kf.cc src/lib_state_estimation.cc)
+target_link_libraries(test_kf drake::drake)

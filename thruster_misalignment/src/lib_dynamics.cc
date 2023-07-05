@@ -1,4 +1,7 @@
-#include <include/lib_dynamics.hpp>
+#include <lib_dynamics.hpp>
+
+namespace drake {
+
 HCW_Dynamics::HCW_Dynamics(double n)
 {
     // xdotdot = 3n^2x + 2nydot + ux
@@ -8,12 +11,12 @@ HCW_Dynamics::HCW_Dynamics(double n)
     //state vector = [pos, posdot] or [x,y,z,xdot,ydot,zdot]
     auto state_index = DeclareContinuousState(3,3,0);
     DeclareStateOutputPort("y", state_index); //output port will be integrated state
-    DeclareNumericParameter(systems::BasicVector<T>(Vector1<T>(n))); //numeric parameter is the n for orbit speed
-    DeclareVectorInputPort("u",3) // this is the control input
+    DeclareNumericParameter(systems::BasicVector<double>(Vector1<double>(n))); //numeric parameter is the n for orbit rate
+    DeclareVectorInputPort("u",3); // this is the control input
 }
 
 void HCW_Dynamics::DoCalcTimeDerivatives(const systems::Context<double>& context, 
-systems::ContinuousState<double>* derivatives) const override
+systems::ContinuousState<double>* derivatives) const
 {
     //alloc state
     const double x = context.get_continuous_state().get_generalized_position().GetAtIndex(0);
@@ -24,14 +27,14 @@ systems::ContinuousState<double>* derivatives) const override
     const double zdot = context.get_continuous_state().get_generalized_velocity().GetAtIndex(2);
 
     //alloc control input
-    const auto u = EvalVectorInput(context, 0).CopyToVector() //returns Vector<T> of three
+    const auto u = EvalVectorInput(context, 0)->value(); //returns Vector<T> of three
 
     const double n = context.get_numeric_parameter(0).GetAtIndex(0);
 
     //for control input model: apply thrust throughout entire integration
-    const double xdotdot = 3*n*n*x + 2*n*ydot + u.at(0);
-    const double ydotdot = -2*n*xdot + u.at(1);
-    const double zdotdot = -n*n*z + u.at(2);
+    const double xdotdot = 3*n*n*x + 2*n*ydot + u[0];
+    const double ydotdot = -2*n*xdot + u[1];
+    const double zdotdot = -n*n*z + u[2];
 
     derivatives->get_mutable_generalized_position().SetAtIndex(0,xdot);
     derivatives->get_mutable_generalized_position().SetAtIndex(1,ydot);
@@ -40,3 +43,5 @@ systems::ContinuousState<double>* derivatives) const override
     derivatives->get_mutable_generalized_velocity().SetAtIndex(1,ydotdot);
     derivatives->get_mutable_generalized_velocity().SetAtIndex(2,zdotdot);
 }
+
+}//namespace drake
