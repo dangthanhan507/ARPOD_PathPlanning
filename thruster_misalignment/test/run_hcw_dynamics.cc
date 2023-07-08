@@ -37,8 +37,6 @@ void runMain()
     
     simulator.AdvanceTo(DT); //move forward in seconds
     std::cout << "ODE x_k+1: \n" << state.get_vector().CopyToVector() << std::endl;
-
-    
 }
 }//namespace drake
 
