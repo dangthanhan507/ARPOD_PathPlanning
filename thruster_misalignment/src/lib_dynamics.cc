@@ -58,9 +58,9 @@ std::tuple<Eigen::MatrixXd,Eigen::MatrixXd> createZOHHCW(double n, double dt)
          -6*n*(1-cos(n*dt)), 0, 0, -2*sin(n*dt), 4*cos(n*dt)-3, 0,
          0,0,-n*sin(n*dt), 0, 0, cos(n*dt);
     //B is 6x3
-    B << sin(n*dt)/n, 2*(1-cos(n*dt))/n, 0,
-         -2*(n*dt - sin(n*dt))/n/n, 4*(1-cos(n*dt))/n/n-(3/2)*dt*dt, 0,
-         0,0,(1-cos(n*dt))/n/n,
+    B << (1-cos(n*dt))/(n*n), (2*n*dt - 2*sin(n*dt))/(n*n),0,
+         -2*(n*dt - sin(n*dt))/(n*n), 4*(1-cos(n*dt))/(n*n)-(1.5)*dt*dt, 0,
+         0,0,(1-cos(n*dt))/(n*n),
          sin(n*dt)/n,2*(1-cos(n*dt))/n,0,
          -2*(1-cos(n*dt))/n, 4*sin(n*dt)/n-3*dt, 0,
          0,0,sin(n*dt)/n;

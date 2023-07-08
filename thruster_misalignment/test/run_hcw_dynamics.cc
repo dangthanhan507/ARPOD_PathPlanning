@@ -27,15 +27,16 @@ void runMain()
 
     //control input
     VectorX<double> u(3);
-    u << 1,0,0;
+
+    u << 10,0,0;
     space_sim.get_input_port(0).FixValue(&simulator.get_mutable_context(), u);
 
     auto [A,B] = createZOHHCW(ORBITAL_RATE, DT);
-    auto x_k1 = A*state.get_vector().CopyToVector() + B*u;
+    Eigen::VectorXd x_k1 = A*state.get_vector().CopyToVector() + B*u;
     std::cout << "MAT x_k+1: \n" << x_k1 << std::endl;
     
     simulator.AdvanceTo(DT); //move forward in seconds
-    std::cout << "ODE x_k+1: \n" << state.get_vector() << std::endl;
+    std::cout << "ODE x_k+1: \n" << state.get_vector().CopyToVector() << std::endl;
 
     
 }
