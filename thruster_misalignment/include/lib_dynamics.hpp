@@ -14,9 +14,24 @@ namespace drake{
 class HCW_Dynamics : public systems::LeafSystem<double>
 {
     public:
+    /**
+     * Initializes Dynamics as a LeafSystem to use with Drake's Simulator.
+     * 
+     * @param n: ORBITAL SPEED of the spacecraft
+    */
     HCW_Dynamics(double n);
 
     private:
+    /**
+     * NOTE: DoCalcTimeDerivatives works under the hood to calculate the time derivative
+     * of the dynamics. This is combined with an ODE solver to simulate the relative
+     * orbital dynamics.
+     * 
+     * @param context: Context of the System which contains all of the information necessary
+     * to calculate the derivative.
+     * @param derivatives: This is our "function output". We modify/assign values to this for 
+     * the LeafSystem to use.
+    */
     void DoCalcTimeDerivatives(const systems::Context<double>& context, 
     systems::ContinuousState<double>* derivatives) const override;
 };

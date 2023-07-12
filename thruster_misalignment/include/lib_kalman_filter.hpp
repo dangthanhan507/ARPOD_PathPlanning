@@ -77,6 +77,23 @@ class KalmanFilter
         return std::make_tuple(state, cov);
     }
 
+    /**
+     * Kalman Smoother:
+     * This is the backward pass variation of the 
+     * 
+     * This is also used for the E-step of the Kalman Filter
+     * 
+     * OncEigen::MatrixXd e the smoother finishes, the values are saved inplace in beliefs.
+     * 
+     * we assume the beliefs are time sorted with the most recent state last
+     * 
+     * Refer to the Rauch-Tung-Striebel smoother for the derivations
+     * 
+     * @param beliefs: a vector of beliefs that represent the series of states to smooth size = N
+     * @param beliefs: a vector of control inputs needed for prediction calculations size = N-1
+    */
+    void kalmanSmooth(std::vector<Belief>& beliefs, const std::vector<Eigen::VectorXd>& us);
+
     private:
     //kalman filter matrices
     Eigen::MatrixXd A;

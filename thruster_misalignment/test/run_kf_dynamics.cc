@@ -34,7 +34,7 @@ int main()
     for (int t = 0; t < 5; ++t)
     {
         std::cout << "Time " << t+1 << ": \n";
-
+        u << t, t, t;
         space_sim.get_input_port(0).FixValue(&simulator.get_mutable_context(), u);
         std::cout << "Prediction Est: \n";
         std::cout << A*state.get_vector().CopyToVector() + B*u << std::endl;

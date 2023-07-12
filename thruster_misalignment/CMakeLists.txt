@@ -19,3 +19,6 @@ target_link_libraries(test_kf drake::drake)
 
 add_executable(test_kf_hcw test/run_kf_dynamics.cc src/lib_dynamics.cc src/lib_kalman_filter.cc)
 target_link_libraries(test_kf_hcw drake::drake)
+
+add_executable(test_kf_bp test/run_kf_bp.cc src/lib_dynamics.cc src/lib_kalman_filter.cc)
+target_link_libraries(test_kf_bp drake::drake)
