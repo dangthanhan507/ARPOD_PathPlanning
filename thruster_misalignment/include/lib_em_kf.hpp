@@ -3,6 +3,7 @@
 
 #include <Eigen/Dense>
 #include <lib_kalman_filter.hpp>
+#include <vector>
 /** lib_em_kf.hpp
  * SUMMARY:
  * Experimental Research Software for the Expectation Maximization Code.
@@ -19,6 +20,7 @@
  * it might be possible to use MPC_MHE
 */
 
+using Belief = std::tuple<Eigen::VectorXd,Eigen::MatrixXd>;
 class ExpectationMaximization: public KalmanFilter
 {
     public:
@@ -38,9 +40,22 @@ class ExpectationMaximization: public KalmanFilter
     */
     void Estep();
     void Mstep();
-    void MAP();
+
+    /**
+     * Performs EM Maximum Likelihood Estimation
+     * 
+     * this is done by performing the Estep (Expectation step)
+     * to obtain the marginal distribution of states
+     * 
+     * then the Mstep (Maximization Step) is performed to get the 
+     * best parameters.
+     * 
+    */
+    void MLE();
 
     private:
+    std::vector<Belief> beliefs;
+    std::vector<Eigen::VectorXd> control_inputs;
 }
 
 #endif
